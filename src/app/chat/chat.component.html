@@ -1,18 +1,18 @@
 <div class="card mx-4">
     <div class="card-header">
         <ul class="nav nav-pills card-header-pills">
-            <li class="nav-item" style="margin-right: 8px;">
-                <button class="btn btn-success" type="button">Conectar</button>
+            <li class="nav-item" style="margin-right: 8px;" *ngIf="!conectado">
+                <button class="btn btn-success" type="button" (click)="conectar()">Conectar</button>
             </li>
-            <li class="nav-item">
-                <button class="btn btn-warning" type="button">Desconectar</button>
+            <li class="nav-item" *ngIf="conectado">
+                <button class="btn btn-warning" type="button" (click)="desconectar()">Desconectar</button>
             </li>
         </ul>
     </div>
 
-    <div class="card-body" style="overflow-y: scroll; height: 380px;"></div>
+    <div class="card-body" style="overflow-y: scroll; height: 380px;" *ngIf="conectado"></div>
 
-    <div class="card-footer">
+    <div class="card-footer" *ngIf="conectado">
         <form class="form-inline">
             <div class="form-group">
                 <div class="row">

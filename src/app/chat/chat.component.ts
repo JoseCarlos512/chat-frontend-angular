@@ -33,6 +33,10 @@ export class ChatComponent implements OnInit {
         this.mensajes.push(mensaje);
         console.log(mensaje)
       })
+
+      this.mensaje.tipo = 'NUEVO_USUARIO';
+      this.client.publish({destination: '/app/mensaje', body: JSON.stringify(this.mensaje)});
+
     }
 
     this.client.onDisconnect = (frame) => {
@@ -54,6 +58,7 @@ export class ChatComponent implements OnInit {
    * prefijo /app como se ha indicado en el backend
    */
   enviarMensaje(): void {
+    this.mensaje.tipo = 'MENSAJE';
     this.client.publish({destination: '/app/mensaje', body: JSON.stringify(this.mensaje)});
     this.mensaje.texto = '';
   }

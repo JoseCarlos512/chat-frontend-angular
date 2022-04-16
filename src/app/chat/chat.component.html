@@ -2,10 +2,13 @@
     <div class="card-header">
         <ul class="nav nav-pills card-header-pills">
             <li class="nav-item" style="margin-right: 8px;" *ngIf="!conectado">
-                <button class="btn btn-success" type="button" (click)="conectar()">Conectar</button>
+                <input [(ngModel)]="mensaje.username" class="form-control" placeholder="Username" name="username" type="text">
             </li>
-            <li class="nav-item" *ngIf="conectado">
-                <button class="btn btn-warning" type="button" (click)="desconectar()">Desconectar</button>
+            <li class="nav-item" style="margin-right: 8px;" >
+                <button class="btn btn-success" *ngIf="!conectado" [disabled]="!mensaje.username" type="button" (click)="conectar()">Conectar</button>
+            </li>
+            <li class="nav-item">
+                <button *ngIf="conectado"  class="btn btn-warning" type="button" (click)="desconectar()">Desconectar</button>
             </li>
         </ul>
     </div>
@@ -14,7 +17,8 @@
         <!-- list-group-flush : Sin bordes de la caja del mensaje-->
         <ul class="list-group list-group-flush">
             <li class="list-group-item list-group-item-light" *ngFor="let mensaje of mensajes">
-                {{mensaje.fecha | date: 'shortTime'}} : {{mensaje.texto}}
+                <span *ngIf="mensaje.tipo=='NUEVO_USUARIO'"> {{mensaje.fecha | date: 'shortTime'}} {{mensaje.texto}} @{{mensaje.username}}</span>
+                <span *ngIf="mensaje.tipo=='MENSAJE'"> {{mensaje.fecha | date: 'shortTime'}} {{mensaje.username}} : {{mensaje.texto}} </span>
             </li>
         </ul>
     </div>

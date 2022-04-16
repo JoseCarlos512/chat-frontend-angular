@@ -14,6 +14,8 @@ export class ChatComponent implements OnInit {
   public conectado: boolean = false;
   public mensaje : Mensaje = new Mensaje();
   public mensajes : Mensaje[] = [];
+  public escribiendo!: string;
+  public userEscribiendo!:string;
 
   constructor() { }
 
@@ -27,6 +29,11 @@ export class ChatComponent implements OnInit {
       console.log("Conectados: " + this.client.connected + ' : ' + frame);
       this.conectado = true;
 
+      /**
+       * Se ha sucrito a chat/mensaje donde escuchar cualquier
+       * cambio que se haga en el servidor a nivel del canal
+       * chat/mensaje
+       */
       this.client.subscribe('/chat/mensaje', e => {
         let mensaje: Mensaje = JSON.parse(e.body) as Mensaje;
         mensaje.fecha = new Date(mensaje.fecha);
@@ -37,6 +44,17 @@ export class ChatComponent implements OnInit {
 
         this.mensajes.push(mensaje);
         console.log(mensaje)
+      })
+
+
+      /**
+       * Se ha suscrito a otro canal chat/escrbiendo, donde se enterara
+       * que usuario esta tecleando en tiempo real
+       */
+      this.client.subscribe('/chat/escribiendo', e => {
+          this.escribiendo = e.body + " esta escribiendo...";
+          this.userEscribiendo = e.body;
+          setTimeout(()=> {this.escribiendo = ''}, 3000)
       })
 
       this.mensaje.tipo = 'NUEVO_USUARIO';
@@ -66,6 +84,10 @@ export class ChatComponent implements OnInit {
     this.mensaje.tipo = 'MENSAJE';
     this.client.publish({destination: '/app/mensaje', body: JSON.stringify(this.mensaje)});
     this.mensaje.texto = '';
+  }
+
+  escribiendoMensaje():void {
+    this.client.publish({destination: '/app/escribiendo', body: this.mensaje.username});
   }
 
 }

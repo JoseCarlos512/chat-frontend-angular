@@ -17,8 +17,8 @@
         <!-- list-group-flush : Sin bordes de la caja del mensaje-->
         <ul class="list-group list-group-flush">
             <li class="list-group-item list-group-item-light" *ngFor="let mensaje of mensajes">
-                <span *ngIf="mensaje.tipo=='NUEVO_USUARIO'"> {{mensaje.fecha | date: 'shortTime'}} {{mensaje.texto}} @{{mensaje.username}}</span>
-                <span *ngIf="mensaje.tipo=='MENSAJE'"> {{mensaje.fecha | date: 'shortTime'}} {{mensaje.username}} : {{mensaje.texto}} </span>
+                <span *ngIf="mensaje.tipo=='NUEVO_USUARIO'"> {{mensaje.fecha | date: 'shortTime'}} {{mensaje.texto}} <span [ngStyle]="{'color':mensaje.color}">@{{mensaje.username}}</span> </span>
+                <span *ngIf="mensaje.tipo=='MENSAJE'"> {{mensaje.fecha | date: 'shortTime'}} <span [ngStyle]="{'color':mensaje.color}">@{{mensaje.username}}</span> : {{mensaje.texto}} </span>
             </li>
         </ul>
     </div>
